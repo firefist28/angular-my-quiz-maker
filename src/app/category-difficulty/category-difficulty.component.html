@@ -1,0 +1,43 @@
+<div class="d-flex align-items-center">
+  <div class="form-group flex-grow-1">
+    <label for="categorySelect">Category:</label>
+    <select
+      id="categorySelect"
+      class="form-control"
+      [(ngModel)]="selectedCategory"
+      name="category"
+    >
+      <option *ngFor="let category of categories" [ngValue]="category.id">
+        {{ category.name }}
+      </option>
+    </select>
+  </div>
+  <div class="form-group flex-grow-1">
+    <label for="difficultySelect">Difficulty:</label>
+    <select
+      id="difficultySelect"
+      class="form-control"
+      [(ngModel)]="selectedDifficulty"
+      name="difficulty"
+    >
+      <option [ngValue]="'easy'">Easy</option>
+      <option [ngValue]="'medium'">Medium</option>
+      <option [ngValue]="'hard'">Hard</option>
+    </select>
+  </div>
+</div>
+<br />
+<div class="text-center">
+  <button type="button" class="btn btn-primary" (click)="onCreateQuizClicked()">
+    Create Quiz
+  </button>
+</div>
+
+<div
+  *ngIf="categoryAndDiffucltySelected()"
+  class="alert alert-secondary"
+  role="alert"
+>
+  Please Select All Options Above
+</div>
+<br />

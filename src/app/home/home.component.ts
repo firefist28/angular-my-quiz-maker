@@ -1,47 +1,78 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { BasketService } from '../basket_teams/basket.service';
-import { Team } from '../basket_teams/team';
+import { Component, OnInit } from '@angular/core';
+import { Category } from '../models/category.model';
+import { QuizQuestion } from '../models/quiz-question.model';
+import { CategoriesService } from '../services/categories/categories.service';
+import { QuizService } from '../services/quiz/quiz.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
+  categories: Category[] = [];
+  quizQuestions: QuizQuestion[] = [];
+  quizLoading: boolean = false;
+  categoryLoading: boolean = false;
 
-  subscription: Subscription;
-  selectedTeam: Team;
-  teams: Team[];
-  teamData: Team[] = [];
-  isTeamDisplay = false;
-  appTitle = 'NBA Score Tracking App';
+  constructor(
+    private categoriesService: CategoriesService,
+    private quizService: QuizService
+  ) {}
 
-  constructor(private basketService: BasketService, private router: Router) {
-
+  ngOnInit() {
+    this.fetchCategories();
   }
-  ngOnInit(): void {
-    this.subscription = this.basketService
-      .getTeamsList().subscribe((data: Team[]) => {
-        this.teams = data;
-      });
+
+  fetchCategories() {
+    this.categoryLoading = true;
+    this.categoriesService.fetchCategories().subscribe(
+      (response) => {
+        this.categories = response;
+        this.categoryLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+        this.categoryLoading = false;
+      }
+    );
   }
-  getSelectedTeam(selectedTeam: Team): void {
-    if (this.teamData.indexOf(selectedTeam) === -1) {
-      this.teamData.push(selectedTeam);
+
+  createQuiz(categoryAndDifficult: { category: number; difficult: string }) {
+    if (
+      categoryAndDifficult.category === 0 ||
+      categoryAndDifficult.difficult === ''
+    ) {
+      // Show error message or perform any other desired action
+      console.error(
+        'Please select a category and difficulty before creating a quiz.'
+      );
+      return;
     }
-    this.isTeamDisplay = true;
-  }
-  removeTeamCard(team: Team): void {
-    const teamIndex: number = this.teamData.findIndex((t: Team) => t === team);
-    this.teamData.splice(teamIndex, 1);
+
+    this.quizLoading = true;
+    this.quizService
+      .fetchQuizQuestions(
+        5,
+        categoryAndDifficult.category,
+        categoryAndDifficult.difficult
+      )
+      .subscribe(
+        (response) => {
+          this.quizQuestions = response.map((question) => ({
+            ...question,
+            selectedAnswer: '',
+          }));
+          this.quizLoading = false;
+        },
+        (error) => {
+          console.error('Error fetching quiz questions:', error);
+          this.quizLoading = false;
+        }
+      );
   }
 
-  isDisplayResult(): boolean {
-    return this.router.url.includes('/results');
-  }
-
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+  selectAnswer(question: QuizQuestion, answer: string) {
+    question.selectedAnswer = answer;
   }
 }

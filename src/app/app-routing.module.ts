@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TeamResultCardComponent } from './basket_teams/team-result-card/team-result-card.component';
 import { HomeComponent } from './home/home.component';
+import { ResultsComponent } from './results/results.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'results/:teamID', component: TeamResultCardComponent },
+  { path: 'results', component: ResultsComponent },
+  { path: 'new-quiz', component: HomeComponent },
+  { path: '', redirectTo: 'new-quiz', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

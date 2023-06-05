@@ -1,29 +1,24 @@
-<div class="margin-space">
-  <h2>{{appTitle}}</h2>
-  </div>
-
-<ng-container *ngIf="!isDisplayResult()">
-  <form #basketForm='ngForm'>
-          <select [(ngModel)]="selectedTeam" id="teamSelect" name="team" class="margin-space">
-            <option [ngValue]="team" *ngFor="let team of teams">
-              {{ team.full_name }}
-            </option>
-          </select>
-          <button type="button" class="btn btn-primary float-right margin-btn" id="trackBtn"
-            (click)="getSelectedTeam(selectedTeam)">
-            Track team
-        </button>
-  </form>
-  <div *ngIf="isTeamDisplay && selectedTeam">
-    <div clas="ng-continer">
-      <div class="row">
-    <app-team-detail-card class="col-5 margin-space" *ngFor="let teamDetail of teamData" (removeTeamComponent)="removeTeamCard(teamDetail)"
-      [team]="teamDetail"></app-team-detail-card>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div *ngIf="categoryLoading" class="text-center">
+        <div class="spinner-border text-secondary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <app-category-difficulty [categories]="categories" (createQuizClicked)="createQuiz($event)" *ngIf="!categoryLoading"></app-category-difficulty>
     </div>
   </div>
-
+  <br />
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div *ngIf="quizLoading" class="text-center">
+        <h3>Loading quiz questions...</h3>
+        <div class="spinner-border text-secondary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <app-quiz-questions [quizQuestions]="quizQuestions" *ngIf="quizQuestions.length > 0 && !quizLoading"></app-quiz-questions>
+    </div>
   </div>
-</ng-container>
-<ng-container>
-  <router-outlet *ngIf="isDisplayResult()"></router-outlet>
-</ng-container>
+</div>
