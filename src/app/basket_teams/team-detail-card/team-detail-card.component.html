@@ -1,0 +1,33 @@
+<div class="card" style="width: 20rem;" *ngIf="team">
+  <button id="remove{{ team.abbreviation }}" data-dismiss="alert" type="button" class="close float-right close-btn"
+    aria-label="Close" (click)="removeTeam()">
+    <b><span aria-hidden="true">x</span></b>
+  </button>
+  <div class="card-body">
+    <h3 class="card-title">{{ team.full_name }}[{{ team.abbreviation }}]</h3>
+    <h6>{{ team.conference }}ern Conference</h6>
+    <hr />
+    <p class="card-text">Result of past 12 days:</p>
+    <ng-container *ngFor="let win of winLostArr">
+      <ng-container *ngIf="win">
+        <b class=" text-success margin-alignment">W</b>
+      </ng-container>
+      <ng-container *ngIf="!win">
+        <b class="text-danger margin-alignment">L</b>
+      </ng-container>
+    </ng-container>
+    <p>
+      Avg pts scored : <b>{{averagePoints | number : '1.0-0'}}</b>
+    </p>
+    <p>
+      Avg pts conceded : <b>{{concededPoints | number : '1.0-0'}}</b>
+    </p>
+    <button class="btn btn-success" attr.id="results{{ team.abbreviation }}" [routerLink]="['/results/', team.id]">
+      See Game Results >>
+    </button>
+    <img id="teamImg" src="{{
+      'https://interstate21.com/nba-logos/' + team.abbreviation + '.png'
+    }}" height="90px" width="90px" />
+
+  </div>
+</div>

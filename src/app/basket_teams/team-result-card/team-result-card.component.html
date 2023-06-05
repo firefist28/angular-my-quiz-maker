@@ -1,0 +1,15 @@
+<div class="card" style="width: 20rem;" *ngIf="teamData">
+  <div class="card-body">
+    <h3 class="card-title"> {{ teamData.full_name}}[{{ teamData.abbreviation}}]</h3>
+    <h6>{{ teamData.conference}}ern Conference</h6>
+    <hr />
+    <h6>Scores of Past 12 days:</h6>
+    <ul class="list-score">
+      <li *ngFor="let teamResult of teamResultArr">
+        {{ teamResult }}
+      </li>
+    </ul>
+    <button class="btn btn-success margin-space" (click) ="backButtonClick()">
+      << Back to all team stats </button>
+  </div>
+</div>

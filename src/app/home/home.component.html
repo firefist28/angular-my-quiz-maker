@@ -1,0 +1,29 @@
+<div class="margin-space">
+  <h2>{{appTitle}}</h2>
+  </div>
+
+<ng-container *ngIf="!isDisplayResult()">
+  <form #basketForm='ngForm'>
+          <select [(ngModel)]="selectedTeam" id="teamSelect" name="team" class="margin-space">
+            <option [ngValue]="team" *ngFor="let team of teams">
+              {{ team.full_name }}
+            </option>
+          </select>
+          <button type="button" class="btn btn-primary float-right margin-btn" id="trackBtn"
+            (click)="getSelectedTeam(selectedTeam)">
+            Track team
+        </button>
+  </form>
+  <div *ngIf="isTeamDisplay && selectedTeam">
+    <div clas="ng-continer">
+      <div class="row">
+    <app-team-detail-card class="col-5 margin-space" *ngFor="let teamDetail of teamData" (removeTeamComponent)="removeTeamCard(teamDetail)"
+      [team]="teamDetail"></app-team-detail-card>
+    </div>
+  </div>
+
+  </div>
+</ng-container>
+<ng-container>
+  <router-outlet *ngIf="isDisplayResult()"></router-outlet>
+</ng-container>
