@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Category } from '../models/category.model';
 
+
 @Component({
   selector: 'app-category-difficulty',
   templateUrl: './category-difficulty.component.html',
