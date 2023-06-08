@@ -1,15 +1,16 @@
 <div *ngFor="let question of quizQuestions; let i = index" class="card mb-3">
   <div class="card-body">
-    <p class="card-text">{{ question.question }}</p>
+    <p class="card-text" [innerHTML]="question.question"></p>
     <div *ngFor="let answer of question.answers; let j = index" class="card answer-card"
          [class.selected]="question.selectedAnswer === answer"
          (click)="selectAnswer(question, answer)">
       <div class="card-body">
-        <p class="card-text">{{ answer }}</p>
+        <p class="card-text" [innerHTML]="answer"></p>
       </div>
     </div>
   </div>
 </div>
+
 
 <div class="d-grid gap-2">
   <button type="button" class="btn btn-primary" (click)="submitQuiz()">Submit Quiz</button>
