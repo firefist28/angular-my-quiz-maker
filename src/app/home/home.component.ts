@@ -43,7 +43,6 @@ export class HomeComponent implements OnInit {
       categoryAndDifficult.category === 0 ||
       categoryAndDifficult.difficult === ''
     ) {
-      // Show error message or perform any other desired action
       console.error(
         'Please select a category and difficulty before creating a quiz.'
       );
